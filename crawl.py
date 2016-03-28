@@ -84,5 +84,9 @@ def has_arguments():
         if len(sys.argv) == 2:
             print sys.argv[1]
             c.get(sys.argv[1])
-
+        else:
+            print "One argument is not more than one!"
+    elif len(sys.argv) == 1:
+        print "paste an url"
+        
 has_arguments()
