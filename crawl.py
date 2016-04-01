@@ -11,7 +11,8 @@
 
 import time
 import requests
-import os, sys
+import os
+import sys
 from bs4 import BeautifulSoup
 
 
@@ -43,13 +44,14 @@ class Crawl():
         f.close()
 
     def get_image(self, url):
-        if url.startswith("https://s.4"):
+        if not url.startswith("https://i.4"):
             return
         # DEBUG PROBLEM WITH .png not .jpg
         purl = url.replace("s.", ".")
         print purl
         req = requests.get(purl)
-        self.save_image(req)
+        print req
+        #self.save_image(req)
 
     def get(self, url):
         print "Sending request for", url
@@ -65,8 +67,8 @@ class Crawl():
 #        I HAVE TO SPECIFY THE IMAGES HERE
         all_images = soup.findAll('img')
         for r in all_images:
-            print "(", all_images.index(r), "/", len(all_images), ")"
-            rurl = "https:" + r.attrs['src']
+            print "(", all_images.index(r)+1, "/", len(all_images), ")"
+            rurl = r.previous_element['href']
             self.get_image(rurl)
 
     def __init__(self):
@@ -88,5 +90,5 @@ def has_arguments():
             print "One argument is not more than one!"
     elif len(sys.argv) == 1:
         print "paste an url"
-        
+
 has_arguments()
