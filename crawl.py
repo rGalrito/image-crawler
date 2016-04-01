@@ -17,10 +17,9 @@ from bs4 import BeautifulSoup
 
 
 class Crawl():
-    t = "test"
     path = ""
 
-    def hash(self):
+    def create_dir_name(self):
         return str(time.strftime("%y%m%d%H%M%S"))
 
     def save_on_dir(self, title):
@@ -46,12 +45,9 @@ class Crawl():
     def get_image(self, url):
         if not url.startswith("https://i.4"):
             return
-        # DEBUG PROBLEM WITH .png not .jpg
         purl = url.replace("s.", ".")
-        print purl
         req = requests.get(purl)
-        print req
-        #self.save_image(req)
+        self.save_image(req)
 
     def get(self, url):
         print "Sending request for", url
@@ -64,27 +60,24 @@ class Crawl():
 
         print "Path name is", self.path
         soup = BeautifulSoup(req.text, "lxml")
-#        I HAVE TO SPECIFY THE IMAGES HERE
         all_images = soup.findAll('img')
         for r in all_images:
-            print "(", all_images.index(r)+1, "/", len(all_images), ")"
-            rurl = r.previous_element['href']
+            print "(", all_images.index(r) + 1, "/", len(all_images), ")"
+            rurl = "https:" + r.previous_element['href']
             self.get_image(rurl)
 
     def __init__(self):
-        self.path = self.hash()
+        self.path = self.create_dir_name()
 
-c = Crawl()
 
-# c.hash()
 
-#c.get(u"https://boards.4chan.org/pol/thread/68971418/flags")
 
 
 def has_arguments():
     if len(sys.argv) > 1:
         if len(sys.argv) == 2:
             print sys.argv[1]
+            c = Crawl()
             c.get(sys.argv[1])
         else:
             print "One argument is not more than one!"
