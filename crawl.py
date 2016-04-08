@@ -70,9 +70,6 @@ class Crawl():
         self.path = self.create_dir_name()
 
 
-
-
-
 def has_arguments():
     if len(sys.argv) > 1:
         if len(sys.argv) == 2:
