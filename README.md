@@ -1,6 +1,6 @@
 #### How to use
 
-`python crawl.py (thread-url)`
+`python3 crawl.py (thread-url)`
 
 
 #### How to install
