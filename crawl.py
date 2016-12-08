@@ -29,7 +29,7 @@ class Crawl():
                 os.makedirs(self.path)
                 return self.path
         except Exception as e:
-            print e
+            print("e")
 
     def save_image(self, img):
         file_name = img.url
@@ -38,7 +38,7 @@ class Crawl():
 #        print "self.path", self.path
 #        print "filename", file_name
         save_path_file_name = self.path + "/" + str(file_name)
-        f = open(save_path_file_name, 'w')
+        f = open(save_path_file_name, 'wb')
         f.write(img._content)
         f.close()
 
@@ -50,7 +50,7 @@ class Crawl():
         self.save_image(req)
 
     def get(self, url):
-        print "Sending request for", url
+        print("Sending request for", url)
 
         req = requests.get(url)
         first_slash = url[::-1].find("/")
@@ -58,11 +58,11 @@ class Crawl():
         title = url[-first_slash::]
         self.save_on_dir(title)
 
-        print "Path name is", self.path
+        print("Path name is", self.path)
         soup = BeautifulSoup(req.text, "lxml")
         all_images = soup.findAll('img')
         for r in all_images:
-            print "(", all_images.index(r) + 1, "/", len(all_images), ")"
+            print("(", all_images.index(r) + 1, "/", len(all_images), ")")
             rurl = "https:" + r.previous_element['href']
             self.get_image(rurl)
 
@@ -73,12 +73,12 @@ class Crawl():
 def has_arguments():
     if len(sys.argv) > 1:
         if len(sys.argv) == 2:
-            print sys.argv[1]
+            print(sys.argv[1])
             c = Crawl()
             c.get(sys.argv[1])
         else:
-            print "One argument is not more than one!"
+            print("One argument is not more than one!")
     elif len(sys.argv) == 1:
-        print "paste an url"
+        print("paste an url")
 
 has_arguments()
