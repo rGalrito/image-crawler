@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+#!/usr/bin/python3 -tt
 # -*- coding: utf-8 -*-
 #
 # This program will download all images from one thread
@@ -43,10 +43,10 @@ class Crawl():
         f.close()
 
     def get_image(self, url):
-        if not url.startswith("https://i.4"):
+        if not url.startswith("https://i.4") and not url.startswith("https://is.4"):
             return
-        purl = url.replace("s.", ".")
-        req = requests.get(purl)
+#        purl = url.replace("s.", ".")
+        req = requests.get(url)
         self.save_image(req)
 
     def get(self, url):
@@ -63,7 +63,11 @@ class Crawl():
         all_images = soup.findAll('img')
         for r in all_images:
             print("(", all_images.index(r) + 1, "/", len(all_images), ")")
-            rurl = "https:" + r.previous_element['href']
+            try:
+                rurl = "https:" + r.previous_element['href']
+            except:
+                print("This image couldn't be downloaded")
+                continue
             self.get_image(rurl)
 
     def __init__(self):
